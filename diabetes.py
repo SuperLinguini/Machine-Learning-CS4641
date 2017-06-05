@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import time
-# import tensorflow as tf
+import tensorflow as tf
 
 import sklearn.preprocessing as preprocessing
 from sklearn.model_selection import train_test_split
@@ -38,7 +38,27 @@ X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=
 X_test = scaler.transform(X_test.astype('float32'))
 
 
+def neural_network():
+    X_train2 = X_train.as_matrix()
+    train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
+        X_train2,
+        y_train,
+        every_n_steps=50)
+    test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
+        X_test,
+        y_test,
+        every_n_steps=50)
 
+    tf.logging.set_verbosity(tf.logging.INFO)
+    feature_columns = [tf.contrib.layers.real_valued_column("", dimension=49)]
+    classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
+                                                hidden_units=[10, 10],
+                                                n_classes=3,
+                                                model_dir="/tmp/diabetes_model")
+    classifier.fit(x=X_train2, y=y_train, steps=10)
+    accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
+
+    print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 
 def decision_tree_depths():
     max_depths = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
@@ -212,31 +232,8 @@ def svm():
     df.to_excel('diabetes_svm.xls')
 
 def main():
-    boosting_training_sets()
+    neural_network()
 
-
-# X_train = X_train.as_matrix()
-#
-# def main():
-#     train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-#         X_train,
-#         y_train,
-#         every_n_steps=50)
-#     test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-#         X_test,
-#         y_test,
-#         every_n_steps=50)
-#
-#     tf.logging.set_verbosity(tf.logging.INFO)
-#     feature_columns = [tf.contrib.layers.real_valued_column("", dimension=49)]
-#     classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
-#                                                 hidden_units=[10, 10],
-#                                                 n_classes=3,
-#                                                 model_dir="/tmp/diabetes_model")
-#     classifier.fit(x=X_train, y=y_train, steps=8000)
-#     accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
-#
-#     print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 
 if __name__ == '__main__':
     main()

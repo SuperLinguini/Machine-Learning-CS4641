@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import time
 
-# import tensorflow as tf
+import tensorflow as tf
 import sklearn.preprocessing as preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
@@ -37,47 +37,30 @@ scaler = preprocessing.StandardScaler()
 X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
 X_test = scaler.transform(X_test.astype('float32'))
 
-# X_train = X_train.as_matrix()
-#
-# def main():
-#     train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-#         X_train,
-#         y_train,
-#         every_n_steps=50)
-#     test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-#         X_test,
-#         y_test,
-#         every_n_steps=50)
-#
-#
-#     tf.logging.set_verbosity(tf.logging.INFO)
-#     feature_columns = [tf.contrib.layers.real_valued_column("", dimension=13)]
-#     classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
-#                                                 hidden_units=[10, 10],
-#                                                 n_classes=2,
-#                                                 model_dir="/tmp/adult_model")
-#     classifier.fit(x=X_train, y=y_train, steps=1000, monitors=[train_validation_monitor, test_validation_monitor])
-#     accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
-#
-#     print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
+
+def neural_network():
+    X_train2 = X_train.as_matrix()
+
+    train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
+        X_train2,
+        y_train,
+        every_n_steps=50)
+    test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
+        X_test,
+        y_test,
+        every_n_steps=50)
 
 
-# X_train = X_train.as_matrix()
-# # X_test = X_test.as_matrix()
-#
-#
-# neural_network = tflearn.input_data(shape=[None, 13])
-# neural_network = tflearn.fully_connected(neural_network, 16)
-# neural_network = tflearn.fully_connected(neural_network, 16)
-# neural_network = tflearn.fully_connected(neural_network, 1, activation='softmax')
-# neural_network = tflearn.regression(neural_network)
-#
-# model = tflearn.DNN(neural_network)
-#
-# model.fit(X_train, y_train, n_epoch=10, batch_size=16, show_metric=True)
-#
-# pred = model.predict(X_test)
+    tf.logging.set_verbosity(tf.logging.INFO)
+    feature_columns = [tf.contrib.layers.real_valued_column("", dimension=13)]
+    classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
+                                                hidden_units=[10, 10],
+                                                n_classes=2,
+                                                model_dir="/tmp/adult_model")
+    classifier.fit(x=X_train, y=y_train, steps=1000, monitors=[train_validation_monitor, test_validation_monitor])
+    accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
 
+    print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 
 
 def decision_tree_depths():
@@ -251,7 +234,7 @@ def svm():
     df.to_excel('adult_svm.xls')
 
 def main():
-    boosting_training_sets()
+    neural_network()
 
 
 if __name__ == '__main__':
