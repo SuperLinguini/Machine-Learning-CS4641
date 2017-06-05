@@ -50,53 +50,180 @@ X_test = scaler.transform(X_test.astype('float32'))
 # svm_linear.fit(X_train, y_train)
 # y_pred_lin = svm_linear.predict(X_test)
 # score_lin = svm_linear.score(X_test, y_test)
-#
-# knn = KNeighborsClassifier(n_jobs=-1)
-# knn.fit(X_train, y_train)
-# y_pred_knn_3 = knn.predict(X_test)
-# score_knn_3 = knn.score(X_test, y_test)
-#
-# knn_5 = KNeighborsClassifier(n_neighbors=5, n_jobs=-1)
-# knn_5.fit(X_train, y_train)
-# y_pred_knn_5 = knn.predict(X_test)
-# score_knn_5 = knn.score(X_test, y_test)
-#
-# dt = DecisionTreeClassifier()
-# dt.fit(X_train, y_train)
-# dt_score = dt.score(X_test, y_test)
+
+def decision_tree_depths():
+    max_depths = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
+
+    columns = ['Max Depths', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
 
 
-# neighbors = [1, 5, 10, 20, 40]
-# weights = ['uniform', 'distance']
-#
-# for weight in weights:
-#     for neighbor in neighbors:
-#         start_train = time.time()
-#         knn = KNeighborsClassifier(n_jobs=-1, weights=weight, n_neighbors=neighbor)
-#         knn.fit(X_train, y_train)
-#         end_train = time.time() - start_train
-#
-#         train_score = knn.score(X_train, y_train)
-#         start_test = time.time()
-#         test_score = knn.score(X_test, y_test)
-#         end_test = time.time() - start_test
-#         print('KNN: N-', neighbor, ' Weight-', weight, ' Training Score- ', train_score, ' Test Score-', test_score,
-#               ' Train Time- ', end_train, 'Test Time- ', end_test)
+    for depth in max_depths:
+        start_train = time.time()
+        dt = DecisionTreeClassifier(max_depth=depth)
+        print(dt)
+        dt.fit(X_train, y_train)
+        end_train = time.time() - start_train
+
+        train_score = dt.score(X_train, y_train)
+        start_test = time.time()
+        test_score = dt.score(X_test, y_test)
+        end_test = time.time() - start_test
+
+        values = [depth, train_score, test_score, end_train, end_test]
+        df.loc[len(df)] = values
+
+        print(' '.join(str(col) for col in columns))
+        print(' '.join(str(val) for val in values))
+
+    df.to_excel('diabetes_dt.xls')
+
+def decision_tree_training_sets():
+    training_set_sizes = [.1,.25,.5,.75,.9]
+
+    columns = ['Training Set Size', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+    for training_set_size in training_set_sizes:
+        X_train, X_test, y_train, y_test = train_test_split(
+            encoded_data[list(set(encoded_data.columns) - set(['Target']))],
+            encoded_data['Target'], train_size=training_set_size)
+        scaler = preprocessing.StandardScaler()
+        X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+        X_test = scaler.transform(X_test.astype('float32'))
+
+        start_train = time.time()
+        dt = DecisionTreeClassifier(max_depth=8)
+        print(dt)
+        dt.fit(X_train, y_train)
+        end_train = time.time() - start_train
+
+        train_score = dt.score(X_train, y_train)
+        start_test = time.time()
+        test_score = dt.score(X_test, y_test)
+        end_test = time.time() - start_test
+
+        values = [training_set_size, train_score, test_score, end_train, end_test]
+        df.loc[len(df)] = values
+
+        print(' '.join(str(col) for col in columns))
+        print(' '.join(str(val) for val in values))
+
+    df.to_excel('diabetes_dt_training_sets.xls')
+
+def boosting_depths():
+    max_depths = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
+
+    columns = ['Max Depths', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+
+    for depth in max_depths:
+        start_train = time.time()
+        dt = DecisionTreeClassifier(max_depth=depth)
+        print(dt)
+        dt.fit(X_train, y_train)
+        end_train = time.time() - start_train
+
+        train_score = dt.score(X_train, y_train)
+        start_test = time.time()
+        test_score = dt.score(X_test, y_test)
+        end_test = time.time() - start_test
+
+        values = [depth, train_score, test_score, end_train, end_test]
+        df.loc[len(df)] = values
+
+        print(' '.join(str(col) for col in columns))
+        print(' '.join(str(val) for val in values))
+
+    df.to_excel('diabetes_dt.xls')
+
+def decision_tree_training_sets():
+    training_set_sizes = [.1,.25,.5,.75,.9]
+
+    columns = ['Training Set Size', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+    for training_set_size in training_set_sizes:
+        X_train, X_test, y_train, y_test = train_test_split(
+            encoded_data[list(set(encoded_data.columns) - set(['Target']))],
+            encoded_data['Target'], train_size=training_set_size)
+        scaler = preprocessing.StandardScaler()
+        X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+        X_test = scaler.transform(X_test.astype('float32'))
+
+        start_train = time.time()
+        dt = DecisionTreeClassifier(max_depth=8)
+        print(dt)
+        dt.fit(X_train, y_train)
+        end_train = time.time() - start_train
+
+        train_score = dt.score(X_train, y_train)
+        start_test = time.time()
+        test_score = dt.score(X_test, y_test)
+        end_test = time.time() - start_test
+
+        values = [training_set_size, train_score, test_score, end_train, end_test]
+        df.loc[len(df)] = values
+
+        print(' '.join(str(col) for col in columns))
+        print(' '.join(str(val) for val in values))
+
+    df.to_excel('diabetes_dt_training_sets.xls')
+
+def knn():
+    neighbors = [1, 5, 10, 20, 40]
+    weights = ['uniform', 'distance']
+
+    for weight in weights:
+        for neighbor in neighbors:
+            start_train = time.time()
+            knn = KNeighborsClassifier(n_jobs=-1, weights=weight, n_neighbors=neighbor)
+            knn.fit(X_train, y_train)
+            end_train = time.time() - start_train
+
+            train_score = knn.score(X_train, y_train)
+            start_test = time.time()
+            test_score = knn.score(X_test, y_test)
+            end_test = time.time() - start_test
+            print('KNN: N-', neighbor, ' Weight-', weight, ' Training Score- ', train_score, ' Test Score-', test_score,
+                  ' Train Time- ', end_train, 'Test Time- ', end_test)
+
+def svm():
+    training_set_size = [.1,.25,.5,.75,.9]
+    kernels = ['rbf', 'poly']
+
+    columns = ['Kernel', 'Training Set Size', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+    for kernel in kernels:
+        for tset_size in training_set_size:
+            X_train, X_test, y_train, y_test = train_test_split(
+                encoded_data[list(set(encoded_data.columns) - set(['Target']))],
+                encoded_data['Target'], train_size=tset_size)
+            scaler = preprocessing.StandardScaler()
+            X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+            X_test = scaler.transform(X_test.astype('float32'))
+
+            start = time.time()
+            bagging_svm = BaggingClassifier(SVC(kernel=kernel, cache_size=1000), n_jobs=-1)
+            print(bagging_svm)
+            bagging_svm.fit(X_train, y_train)
+            end_train = time.time() - start
+
+            # y_pred = bagging_svm.predict(X_test)
+            train_score = bagging_svm.score(X_train, y_train)
+            start_test = time.time()
+            test_score = bagging_svm.score(X_test, y_test)
+            end_test = time.time() - start_test
+            values = [kernel, tset_size, train_score, test_score, end_train, end_test]
+            df.loc[len(df)] = values
+            print(' '.join(str(col) for col in columns))
+            print(' '.join(str(val) for val in values))
+    df.to_excel('diabetes_svm.xls')
 
 def main():
-    start = time.time()
-    bagging_svm = BaggingClassifier(SVC(), n_jobs=-1)
-    print(bagging_svm)
-    bagging_svm.fit(X_train, y_train)
-    end_train = time.time() - start
-
-    # y_pred = bagging_svm.predict(X_test)
-    train_score = bagging_svm.score(X_train, y_train)
-    start_test = time.time()
-    test_score = bagging_svm.score(X_test, y_test)
-    end_test = time.time() - start_test
-    print('Train Score: ', train_score, ' Test Score: ', test_score)
-    print('Train Time: ', end_train, ' Test Time: ', end_test)
+    decision_tree_training_sets()
 
 
 # X_train = X_train.as_matrix()

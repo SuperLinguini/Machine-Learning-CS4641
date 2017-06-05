@@ -32,12 +32,12 @@ data.fillna('', inplace=True)
 
 encoded_data, encoders = encode_discrete_features(data)
 
-# X_train, X_test, y_train, y_test = train_test_split(
-#     encoded_data[list(set(encoded_data.columns) - set(['Target']))],
-#     encoded_data['Target'], train_size=0.70)
-# scaler = preprocessing.StandardScaler()
-# X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
-# X_test = scaler.transform(X_test.astype('float32'))
+X_train, X_test, y_train, y_test = train_test_split(
+    encoded_data[list(set(encoded_data.columns) - set(['Target']))],
+    encoded_data['Target'], train_size=0.70)
+scaler = preprocessing.StandardScaler()
+X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+X_test = scaler.transform(X_test.astype('float32'))
 
 # X_train = X_train.as_matrix()
 #
@@ -119,7 +119,84 @@ encoded_data, encoders = encode_discrete_features(data)
 # dt.score(X_test, y_test)
 #
 
-def main():
+def decision_tree_depths():
+    max_depths = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
+
+    columns = ['Max Depths', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+    for depth in max_depths:
+        start_train = time.time()
+        dt = DecisionTreeClassifier(max_depth=depth)
+        print(dt)
+        dt.fit(X_train, y_train)
+        end_train = time.time() - start_train
+
+        train_score = dt.score(X_train, y_train)
+        start_test = time.time()
+        test_score = dt.score(X_test, y_test)
+        end_test = time.time() - start_test
+
+        values = [depth, train_score, test_score, end_train, end_test]
+        df.loc[len(df)] = values
+
+        print(' '.join(str(col) for col in columns))
+        print(' '.join(str(val) for val in values))
+
+    df.to_excel('adult_dt.xls')
+
+def decision_tree_training_sets():
+    training_set_sizes = [.1,.25,.5,.75,.9]
+
+    columns = ['Training Set Size', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+    for training_set_size in training_set_sizes:
+        X_train, X_test, y_train, y_test = train_test_split(
+            encoded_data[list(set(encoded_data.columns) - set(['Target']))],
+            encoded_data['Target'], train_size=training_set_size)
+        scaler = preprocessing.StandardScaler()
+        X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+        X_test = scaler.transform(X_test.astype('float32'))
+
+        start_train = time.time()
+        dt = DecisionTreeClassifier(max_depth=8)
+        print(dt)
+        dt.fit(X_train, y_train)
+        end_train = time.time() - start_train
+
+        train_score = dt.score(X_train, y_train)
+        start_test = time.time()
+        test_score = dt.score(X_test, y_test)
+        end_test = time.time() - start_test
+
+        values = [training_set_size, train_score, test_score, end_train, end_test]
+        df.loc[len(df)] = values
+
+        print(' '.join(str(col) for col in columns))
+        print(' '.join(str(val) for val in values))
+
+    df.to_excel('adult_dt_training_sets.xls')
+
+def knn():
+    neighbors = [1, 5, 10, 20, 40]
+    weights = ['uniform', 'distance']
+
+    for weight in weights:
+        for neighbor in neighbors:
+            start_train = time.time()
+            knn = KNeighborsClassifier(n_jobs=-1, weights=weight, n_neighbors=neighbor)
+            knn.fit(X_train, y_train)
+            end_train = time.time() - start_train
+
+            train_score = knn.score(X_train, y_train)
+            start_test = time.time()
+            test_score = knn.score(X_test, y_test)
+            end_test = time.time() - start_test
+            print('KNN: N-', neighbor, ' Weight-', weight, ' Training Score- ', train_score, ' Test Score-', test_score,
+                  ' Train Time- ', end_train, 'Test Time- ', end_test)
+
+def svm():
     training_set_size = [.1,.25,.5,.75,.9]
     kernels = ['rbf', 'poly']
 
@@ -136,7 +213,7 @@ def main():
             X_test = scaler.transform(X_test.astype('float32'))
 
             start = time.time()
-            bagging_svm = BaggingClassifier(SVC(kernel=kernel, cache_size=500), n_jobs=-1)
+            bagging_svm = BaggingClassifier(SVC(kernel=kernel, cache_size=1000), n_jobs=-1)
             print(bagging_svm)
             bagging_svm.fit(X_train, y_train)
             end_train = time.time() - start
@@ -151,6 +228,9 @@ def main():
             print(' '.join(str(col) for col in columns))
             print(' '.join(str(val) for val in values))
     df.to_excel('adult_svm.xls')
+
+def main():
+    decision_tree_training_sets()
 
 
 if __name__ == '__main__':
