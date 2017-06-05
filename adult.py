@@ -1,8 +1,10 @@
+#!/users/mlingineni3-gtri/mil/bin python2.7
+
 import pandas as pd
 import numpy as np
 import time
 
-import tensorflow as tf
+# import tensorflow as tf
 import sklearn.preprocessing as preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
@@ -30,36 +32,36 @@ data.fillna('', inplace=True)
 
 encoded_data, encoders = encode_discrete_features(data)
 
-X_train, X_test, y_train, y_test = train_test_split(
-    encoded_data[list(set(encoded_data.columns) - set(['Target']))],
-    encoded_data['Target'], train_size=0.70)
-scaler = preprocessing.StandardScaler()
-X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
-X_test = scaler.transform(X_test.astype('float32'))
+# X_train, X_test, y_train, y_test = train_test_split(
+#     encoded_data[list(set(encoded_data.columns) - set(['Target']))],
+#     encoded_data['Target'], train_size=0.70)
+# scaler = preprocessing.StandardScaler()
+# X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+# X_test = scaler.transform(X_test.astype('float32'))
 
-X_train = X_train.as_matrix()
-
-def main():
-    train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-        X_train,
-        y_train,
-        every_n_steps=50)
-    test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-        X_test,
-        y_test,
-        every_n_steps=50)
-
-
-    tf.logging.set_verbosity(tf.logging.INFO)
-    feature_columns = [tf.contrib.layers.real_valued_column("", dimension=13)]
-    classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
-                                                hidden_units=[10, 10],
-                                                n_classes=2,
-                                                model_dir="/tmp/adult_model")
-    classifier.fit(x=X_train, y=y_train, steps=1000, monitors=[train_validation_monitor, test_validation_monitor])
-    accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
-
-    print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
+# X_train = X_train.as_matrix()
+#
+# def main():
+#     train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
+#         X_train,
+#         y_train,
+#         every_n_steps=50)
+#     test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
+#         X_test,
+#         y_test,
+#         every_n_steps=50)
+#
+#
+#     tf.logging.set_verbosity(tf.logging.INFO)
+#     feature_columns = [tf.contrib.layers.real_valued_column("", dimension=13)]
+#     classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
+#                                                 hidden_units=[10, 10],
+#                                                 n_classes=2,
+#                                                 model_dir="/tmp/adult_model")
+#     classifier.fit(x=X_train, y=y_train, steps=1000, monitors=[train_validation_monitor, test_validation_monitor])
+#     accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
+#
+#     print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 
 
 # X_train = X_train.as_matrix()
@@ -117,12 +119,39 @@ def main():
 # dt.score(X_test, y_test)
 #
 
-# def main():
-#     bagging_svm = BaggingClassifier(SVC(), n_jobs=-1)
-#     print(bagging_svm)
-#     bagging_svm.fit(X_train, y_train)
-#     # y_pred = bagging_svm.predict(X_test)
-#     bagging_svm_score = bagging_svm.score(X_test, y_test)
-#     print(bagging_svm_score)
+def main():
+    training_set_size = [.1,.25,.5,.75,.9]
+    kernels = ['rbf', 'poly']
+
+    columns = ['Kernel', 'Training Set Size', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+    for kernel in kernels:
+        for tset_size in training_set_size:
+            X_train, X_test, y_train, y_test = train_test_split(
+                encoded_data[list(set(encoded_data.columns) - set(['Target']))],
+                encoded_data['Target'], train_size=tset_size)
+            scaler = preprocessing.StandardScaler()
+            X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+            X_test = scaler.transform(X_test.astype('float32'))
+
+            start = time.time()
+            bagging_svm = BaggingClassifier(SVC(kernel=kernel, cache_size=500), n_jobs=-1)
+            print(bagging_svm)
+            bagging_svm.fit(X_train, y_train)
+            end_train = time.time() - start
+
+            # y_pred = bagging_svm.predict(X_test)
+            train_score = bagging_svm.score(X_train, y_train)
+            start_test = time.time()
+            test_score = bagging_svm.score(X_test, y_test)
+            end_test = time.time() - start_test
+            values = [kernel, tset_size, train_score, test_score, end_train, end_test]
+            df.loc[len(df)] = values
+            print(' '.join(str(col) for col in columns))
+            print(' '.join(str(val) for val in values))
+    df.to_excel('adult_svm.xls')
+
+
 if __name__ == '__main__':
     main()

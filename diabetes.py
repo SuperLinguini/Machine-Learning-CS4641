@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import time
-import tensorflow as tf
+# import tensorflow as tf
 
 import sklearn.preprocessing as preprocessing
 from sklearn.model_selection import train_test_split
@@ -34,8 +34,8 @@ X_train, X_test, y_train, y_test = train_test_split(
     encoded_data[list(set(encoded_data.columns) - set(['Target']))],
     encoded_data['Target'], train_size=0.70)
 scaler = preprocessing.StandardScaler()
-X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float64')), columns=X_train.columns)
-X_test = scaler.transform(X_test.astype('float64'))
+X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+X_test = scaler.transform(X_test.astype('float32'))
 
 
 
@@ -83,38 +83,44 @@ X_test = scaler.transform(X_test.astype('float64'))
 #         print('KNN: N-', neighbor, ' Weight-', weight, ' Training Score- ', train_score, ' Test Score-', test_score,
 #               ' Train Time- ', end_train, 'Test Time- ', end_test)
 
-# def main():
-#     start = time.time()
-#     bagging_svm = BaggingClassifier(SVC(), n_jobs=-1)
-#     print(bagging_svm)
-#     bagging_svm.fit(X_train, y_train)
-#     # y_pred = bagging_svm.predict(X_test)
-#     bagging_svm_score = bagging_svm.score(X_test, y_test)
-#     print(bagging_svm_score)
-#     print(time.time() - start)
-
-X_train = X_train.as_matrix()
-
 def main():
-    train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-        X_train,
-        y_train,
-        every_n_steps=50)
-    test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-        X_test,
-        y_test,
-        every_n_steps=50)
+    start = time.time()
+    bagging_svm = BaggingClassifier(SVC(), n_jobs=-1)
+    print(bagging_svm)
+    bagging_svm.fit(X_train, y_train)
+    end_train = time.time() - start
 
-    tf.logging.set_verbosity(tf.logging.INFO)
-    feature_columns = [tf.contrib.layers.real_valued_column("", dimension=49)]
-    classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
-                                                hidden_units=[10, 10],
-                                                n_classes=3,
-                                                model_dir="/tmp/diabetes_model")
-    classifier.fit(x=X_train, y=y_train, steps=8000)
-    accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
+    # y_pred = bagging_svm.predict(X_test)
+    train_score = bagging_svm.score(X_train, y_train)
+    start_test = time.time()
+    test_score = bagging_svm.score(X_test, y_test)
+    end_test = time.time() - start_test
+    print('Train Score: ', train_score, ' Test Score: ', test_score)
+    print('Train Time: ', end_train, ' Test Time: ', end_test)
 
-    print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
+
+# X_train = X_train.as_matrix()
+#
+# def main():
+#     train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
+#         X_train,
+#         y_train,
+#         every_n_steps=50)
+#     test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
+#         X_test,
+#         y_test,
+#         every_n_steps=50)
+#
+#     tf.logging.set_verbosity(tf.logging.INFO)
+#     feature_columns = [tf.contrib.layers.real_valued_column("", dimension=49)]
+#     classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
+#                                                 hidden_units=[10, 10],
+#                                                 n_classes=3,
+#                                                 model_dir="/tmp/diabetes_model")
+#     classifier.fit(x=X_train, y=y_train, steps=8000)
+#     accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
+#
+#     print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 
 if __name__ == '__main__':
     main()
