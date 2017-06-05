@@ -1,0 +1,45 @@
+BaggingClassifier(base_estimator=SVC(C=1.0, cache_size=1000, class_weight=None, coef0=0.0,
+  decision_function_shape=None, degree=3, gamma='auto', kernel='poly',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False),
+         bootstrap=True, bootstrap_features=False, max_features=1.0,
+         max_samples=1.0, n_estimators=10, n_jobs=-1, oob_score=False,
+         random_state=None, verbose=0, warm_start=False)
+Kernel Training Set Size Training Score Test Score Train Time Test Time
+poly 0.1 0.635318396226 0.554285402336 7.2099609375 38.7315380573
+BaggingClassifier(base_estimator=SVC(C=1.0, cache_size=1000, class_weight=None, coef0=0.0,
+  decision_function_shape=None, degree=3, gamma='auto', kernel='poly',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False),
+         bootstrap=True, bootstrap_features=False, max_features=1.0,
+         max_samples=1.0, n_estimators=10, n_jobs=-1, oob_score=False,
+         random_state=None, verbose=0, warm_start=False)
+Kernel Training Set Size Training Score Test Score Train Time Test Time
+poly 0.25 0.632286466727 0.562738290206 61.4734280109 94.1471271515
+BaggingClassifier(base_estimator=SVC(C=1.0, cache_size=1000, class_weight=None, coef0=0.0,
+  decision_function_shape=None, degree=3, gamma='auto', kernel='poly',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False),
+         bootstrap=True, bootstrap_features=False, max_features=1.0,
+         max_samples=1.0, n_estimators=10, n_jobs=-1, oob_score=False,
+         random_state=None, verbose=0, warm_start=False)
+Kernel Training Set Size Training Score Test Score Train Time Test Time
+poly 0.5 0.618418725311 0.570642454258 299.711401939 121.318741083
+BaggingClassifier(base_estimator=SVC(C=1.0, cache_size=1000, class_weight=None, coef0=0.0,
+  decision_function_shape=None, degree=3, gamma='auto', kernel='poly',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False),
+         bootstrap=True, bootstrap_features=False, max_features=1.0,
+         max_samples=1.0, n_estimators=10, n_jobs=-1, oob_score=False,
+         random_state=None, verbose=0, warm_start=False)
+Kernel Training Set Size Training Score Test Score Train Time Test Time
+poly 0.75 0.614786960851 0.573893561827 717.745085955 105.144650936
+BaggingClassifier(base_estimator=SVC(C=1.0, cache_size=1000, class_weight=None, coef0=0.0,
+  decision_function_shape=None, degree=3, gamma='auto', kernel='poly',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False),
+         bootstrap=True, bootstrap_features=False, max_features=1.0,
+         max_samples=1.0, n_estimators=10, n_jobs=-1, oob_score=False,
+         random_state=None, verbose=0, warm_start=False)
+Kernel Training Set Size Training Score Test Score Train Time Test Time
+poly 0.9 0.613599886449 0.576889063575 951.148952007 51.3225140572

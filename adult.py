@@ -8,7 +8,7 @@ import time
 import sklearn.preprocessing as preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-from sklearn.ensemble import BaggingClassifier
+from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree.tree import DecisionTreeClassifier
 
@@ -178,6 +178,66 @@ def decision_tree_training_sets():
 
     df.to_excel('adult_dt_training_sets.xls')
 
+def boosting_estimators():
+    max_estimators = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
+
+    columns = ['Max Estimators', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+    for estimator in max_estimators:
+        start_train = time.time()
+        dt = AdaBoostClassifier(n_estimators=estimator)
+        print(dt)
+        dt.fit(X_train, y_train)
+        end_train = time.time() - start_train
+
+        train_score = dt.score(X_train, y_train)
+        start_test = time.time()
+        test_score = dt.score(X_test, y_test)
+        end_test = time.time() - start_test
+
+        values = [estimator, train_score, test_score, end_train, end_test]
+        df.loc[len(df)] = values
+
+        print(' '.join(str(col) for col in columns))
+        print(' '.join(str(val) for val in values))
+
+    df.to_excel('adult_adaboost_estimators.xls')
+
+def boosting_training_sets():
+    training_set_sizes = [.1,.25,.5,.75,.9]
+
+    columns = ['Training Set Size', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    df = pd.DataFrame(columns=columns)
+
+    for training_set_size in training_set_sizes:
+        X_train, X_test, y_train, y_test = train_test_split(
+            encoded_data[list(set(encoded_data.columns) - set(['Target']))],
+            encoded_data['Target'], train_size=training_set_size)
+        scaler = preprocessing.StandardScaler()
+        X_train = pd.DataFrame(scaler.fit_transform(X_train.astype('float32')), columns=X_train.columns)
+        X_test = scaler.transform(X_test.astype('float32'))
+
+        start_train = time.time()
+        dt = AdaBoostClassifier(asdasd)  # TODO
+        print(dt)
+        dt.fit(X_train, y_train)
+        end_train = time.time() - start_train
+
+        train_score = dt.score(X_train, y_train)
+        start_test = time.time()
+        test_score = dt.score(X_test, y_test)
+        end_test = time.time() - start_test
+
+        values = [training_set_size, train_score, test_score, end_train, end_test]
+        df.loc[len(df)] = values
+
+        print(' '.join(str(col) for col in columns))
+        print(' '.join(str(val) for val in values))
+
+    df.to_excel('adult_adaboost_training_sets.xls')
+
+
 def knn():
     neighbors = [1, 5, 10, 20, 40]
     weights = ['uniform', 'distance']
@@ -230,7 +290,7 @@ def svm():
     df.to_excel('adult_svm.xls')
 
 def main():
-    decision_tree_training_sets()
+    boosting_estimators()
 
 
 if __name__ == '__main__':
