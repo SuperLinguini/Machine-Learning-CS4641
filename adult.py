@@ -1,5 +1,3 @@
-#!/users/mlingineni3-gtri/mil/bin python2.7
-
 import pandas as pd
 import numpy as np
 import time
@@ -81,43 +79,6 @@ X_test = scaler.transform(X_test.astype('float32'))
 # pred = model.predict(X_test)
 
 
-# svm = SVC()
-# svm.fit(X_train, y_train)
-# y_pred = svm.predict(X_test)
-# score = svm.score(X_test, y_test)
-
-
-
-# svm_linear = SVC(kernel='linear')
-# svm_linear.fit(X_train, y_train)
-# y_pred_lin = svm_linear.predict(X_test)
-# score_lin = svm_linear.score(X_test, y_test)
-
-# neighbors = [1, 5, 10, 20, 40]
-# weights = ['uniform', 'distance']
-#
-# df = pd.DataFrame(columns=['K', 'Weight', 'Training Score', 'Test Score', 'Train Time', 'Test Time'])
-# for weight in weights:
-#     for neighbor in neighbors:
-#         start_train = time.time()
-#         knn = KNeighborsClassifier(n_jobs=-1, weights=weight, n_neighbors=neighbor)
-#         knn.fit(X_train, y_train)
-#         end_train = time.time() - start_train
-#
-#         train_score = knn.score(X_train, y_train)
-#         start_test = time.time()
-#         test_score = knn.score(X_test, y_test)
-#         end_test = time.time() - start_test
-#         df.loc[len(df)] = [neighbor, weight, train_score, test_score, end_train, end_test]
-#         print('KNN: N-', neighbor, ' Weight-', weight, ' Training Score- ', train_score, ' Test Score-', test_score, ' Train Time- ', end_train, 'Test Time- ', end_test)
-# df.to_excel('adult.xls')
-
-
-
-# dt = DecisionTreeClassifier()
-# dt.fit(X_train, y_train)
-# dt.score(X_test, y_test)
-#
 
 def decision_tree_depths():
     max_depths = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
@@ -219,7 +180,7 @@ def boosting_training_sets():
         X_test = scaler.transform(X_test.astype('float32'))
 
         start_train = time.time()
-        dt = AdaBoostClassifier(asdasd)  # TODO
+        dt = AdaBoostClassifier(n_estimators=10)
         print(dt)
         dt.fit(X_train, y_train)
         end_train = time.time() - start_train
@@ -290,7 +251,7 @@ def svm():
     df.to_excel('adult_svm.xls')
 
 def main():
-    boosting_estimators()
+    boosting_training_sets()
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@ import time
 import sklearn.preprocessing as preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-from sklearn.ensemble import BaggingClassifier
+from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree.tree import DecisionTreeClassifier
 
@@ -39,17 +39,6 @@ X_test = scaler.transform(X_test.astype('float32'))
 
 
 
-# svm = SVC(cache_size=2000)
-# print(svm)
-# svm.fit(X_train, y_train)
-# y_pred = svm.predict(X_test)
-# score = svm.score(X_test, y_test)
-# print(score)
-#
-# svm_linear = SVC(kernel='linear')
-# svm_linear.fit(X_train, y_train)
-# y_pred_lin = svm_linear.predict(X_test)
-# score_lin = svm_linear.score(X_test, y_test)
 
 def decision_tree_depths():
     max_depths = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
@@ -111,16 +100,15 @@ def decision_tree_training_sets():
 
     df.to_excel('diabetes_dt_training_sets.xls')
 
-def boosting_depths():
-    max_depths = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
+def boosting_estimators():
+    max_estimators = [2, 4, 6, 8, 10, 12, 16, 18, 20, 25, 30, 40]
 
-    columns = ['Max Depths', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
+    columns = ['Max Estimators', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
     df = pd.DataFrame(columns=columns)
 
-
-    for depth in max_depths:
+    for estimator in max_estimators:
         start_train = time.time()
-        dt = DecisionTreeClassifier(max_depth=depth)
+        dt = AdaBoostClassifier(n_estimators=estimator)
         print(dt)
         dt.fit(X_train, y_train)
         end_train = time.time() - start_train
@@ -130,15 +118,15 @@ def boosting_depths():
         test_score = dt.score(X_test, y_test)
         end_test = time.time() - start_test
 
-        values = [depth, train_score, test_score, end_train, end_test]
+        values = [estimator, train_score, test_score, end_train, end_test]
         df.loc[len(df)] = values
 
         print(' '.join(str(col) for col in columns))
         print(' '.join(str(val) for val in values))
 
-    df.to_excel('diabetes_dt.xls')
+    df.to_excel('diabetes_adaboost_estimators.xls')
 
-def decision_tree_training_sets():
+def boosting_training_sets():
     training_set_sizes = [.1,.25,.5,.75,.9]
 
     columns = ['Training Set Size', 'Training Score', 'Test Score', 'Train Time', 'Test Time']
@@ -153,7 +141,7 @@ def decision_tree_training_sets():
         X_test = scaler.transform(X_test.astype('float32'))
 
         start_train = time.time()
-        dt = DecisionTreeClassifier(max_depth=8)
+        dt = AdaBoostClassifier(n_estimators=12)
         print(dt)
         dt.fit(X_train, y_train)
         end_train = time.time() - start_train
@@ -169,7 +157,8 @@ def decision_tree_training_sets():
         print(' '.join(str(col) for col in columns))
         print(' '.join(str(val) for val in values))
 
-    df.to_excel('diabetes_dt_training_sets.xls')
+    df.to_excel('diabetes_adaboost_training_sets.xls')
+
 
 def knn():
     neighbors = [1, 5, 10, 20, 40]
@@ -223,7 +212,7 @@ def svm():
     df.to_excel('diabetes_svm.xls')
 
 def main():
-    decision_tree_training_sets()
+    boosting_training_sets()
 
 
 # X_train = X_train.as_matrix()
