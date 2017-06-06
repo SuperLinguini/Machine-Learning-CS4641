@@ -57,7 +57,7 @@ def neural_network():
                                                 hidden_units=[10, 10],
                                                 n_classes=2,
                                                 model_dir="/tmp/adult_model")
-    classifier.fit(x=X_train, y=y_train, steps=1000, monitors=[train_validation_monitor, test_validation_monitor])
+    classifier.fit(x=X_train, y=y_train, steps=4000, monitors=[train_validation_monitor, test_validation_monitor])
     accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
 
     print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
@@ -235,6 +235,12 @@ def svm():
 
 def main():
     neural_network()
+    decision_tree_depths()
+    decision_tree_training_sets()
+    boosting_estimators()
+    boosting_training_sets()
+    knn()
+    svm()
 
 
 if __name__ == '__main__':

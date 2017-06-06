@@ -1,9 +1,0 @@
-BaggingClassifier(base_estimator=SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-  decision_function_shape=None, degree=3, gamma='auto', kernel='rbf',
-  max_iter=-1, probability=False, random_state=None, shrinking=True,
-  tol=0.001, verbose=False),
-         bootstrap=True, bootstrap_features=False, max_features=1.0,
-         max_samples=1.0, n_estimators=10, n_jobs=-1, oob_score=False,
-         random_state=None, verbose=0, warm_start=False)
-('Train Score: ', 0.62305575832444271, ' Test Score: ', 0.59115623976416642)
-('Train Time: ', 975.4519128799438, ' Test Time: ', 145.85962796211243)
