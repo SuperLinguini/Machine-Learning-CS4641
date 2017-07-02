@@ -154,13 +154,15 @@ def principal_component_analysis():
     X_test_pca = pca.transform(X_test)
     kmeans(X_train_pca, X_test_pca, 'PCA')
     expectation_maximization(X_train_pca, X_test_pca, 'PCA')
+    neural_network(X_train_pca, y_train, X_test_pca, y_test)
 
 def independent_component_analysis():
     ica = FastICA(n_components=20)
     X_train_ica = ica.fit_transform(X_train)
     X_test_ica = ica.transform(X_test)
     kmeans(X_train_ica, X_test_ica, 'ICA')
-    # expectation_maximization(X_train_ica, X_test_ica, 'ICA')
+    expectation_maximization(X_train_ica, X_test_ica, 'ICA')
+    neural_network(X_train_ica, y_train, X_test_ica, y_test)
 
 def randomized_projection():
     rp = GaussianRandomProjection(n_components=20)
@@ -173,13 +175,27 @@ def latent_dirichlet_allocation():
     lda = LatentDirichletAllocation(n_topics=20, learning_method='batch', n_jobs=-1)
     X_train_lda = lda.fit_transform(X_train)
     X_test_lda = lda.transform(X_test)
-    kmeans(X_train_lda, X_test_lda, 'LDA')
-    expectation_maximization(X_train_lda, X_test_lda, 'LDA')
+    # kmeans(X_train_lda, X_test_lda, 'LDA')
+    # expectation_maximization(X_train_lda, X_test_lda, 'LDA')
+    neural_network(X_train_lda, y_train, X_test_lda, y_test)
+
+def neural_network(X_train, y_train, X_test, y_test):
+
+    tf.logging.set_verbosity(tf.logging.INFO)
+    feature_columns = [tf.contrib.layers.real_valued_column("", dimension=X_train.shape[1])]
+    classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
+                                                hidden_units=[10, 10],
+                                                n_classes=2,
+                                                model_dir="/tmp/adult_nn3")
+    classifier.fit(x=X_train, y=y_train, steps=1600)
+    accuracy_score = classifier.evaluate(x=X_test, y=y_test, steps=1)["accuracy"]
+
+    print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 
 if __name__ == '__main__':
-    overall()
-
-    principal_component_analysis()
+    # overall()
+    #
+    # principal_component_analysis()
     # independent_component_analysis()
     # randomized_projection()
-    # latent_dirichlet_allocation()
+    latent_dirichlet_allocation()
