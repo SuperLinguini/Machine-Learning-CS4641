@@ -1,6 +1,8 @@
 ﻿Milind Lingineni
 CS 4641 - Summer 2017
 
+Make sure to have an "Images" folder to store the images.
+
 To run the adult data set:
 python adult.py
 
