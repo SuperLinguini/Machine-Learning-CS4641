@@ -222,10 +222,10 @@ def neural_network(X_train, y_train, X_test, y_test, output_str, i):
 
 if __name__ == '__main__':
 
-    for i in range(3):
+    for i in range(1):
         overall(i)
 
-        # principal_component_analysis(i)
-        # independent_component_analysis(i)
-        # randomized_projection(i)
-        # latent_dirichlet_allocation(i)
+        principal_component_analysis(i)
+        independent_component_analysis(i)
+        randomized_projection(i)
+        latent_dirichlet_allocation(i)

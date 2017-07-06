@@ -148,7 +148,7 @@ def expectation_maximization(train_data, test_data, output_str, i=0):
 def overall(i):
     kmeans(X_train, X_test, 'Overall', i)
     expectation_maximization(X_train, X_test, 'Overall', i)
-    # neural_network(X_train, y_train, X_test, y_test, 'Overall', i)
+    neural_network(X_train, y_train, X_test, y_test, 'Overall', i)
 
 def principal_component_analysis(i):
     pca = PCA(n_components=20)
@@ -156,7 +156,7 @@ def principal_component_analysis(i):
     X_test_pca = pca.transform(X_test)
     kmeans(X_train_pca, X_test_pca, 'PCA', i)
     expectation_maximization(X_train_pca, X_test_pca, 'PCA', i)
-    # neural_network(X_train_pca, y_train, X_test_pca, y_test, 'PCA', i)
+    neural_network(X_train_pca, y_train, X_test_pca, y_test, 'PCA', i)
 
 def independent_component_analysis(i):
     ica = FastICA(n_components=20)
@@ -164,7 +164,7 @@ def independent_component_analysis(i):
     X_test_ica = ica.transform(X_test)
     kmeans(X_train_ica, X_test_ica, 'ICA', i)
     expectation_maximization(X_train_ica, X_test_ica, 'ICA', i)
-    # neural_network(X_train_ica, y_train, X_test_ica, y_test, 'ICA', i)
+    neural_network(X_train_ica, y_train, X_test_ica, y_test, 'ICA', i)
 
 def randomized_projection(i):
     rp = GaussianRandomProjection(n_components=20)
@@ -172,7 +172,7 @@ def randomized_projection(i):
     X_test_rp = rp.transform(X_test)
     kmeans(X_train_rp, X_test_rp, 'RandomizedProjection', i)
     expectation_maximization(X_train_rp, X_test_rp, 'RandomizedProjection', i)
-    # neural_network(X_train_rp, y_train, X_test_rp, y_test, 'RandomizedProjection', i)
+    neural_network(X_train_rp, y_train, X_test_rp, y_test, 'RandomizedProjection', i)
 
 def latent_dirichlet_allocation(i):
     lda = LatentDirichletAllocation(n_topics=20, learning_method='batch', n_jobs=-1)
@@ -180,14 +180,9 @@ def latent_dirichlet_allocation(i):
     X_test_lda = lda.transform(X_test_unscaled)
     kmeans(X_train_lda, X_test_lda, 'LDA', i)
     expectation_maximization(X_train_lda, X_test_lda, 'LDA', i)
-    # neural_network(X_train_lda, y_train, X_test_lda, y_test, 'LDA', i)
+    neural_network(X_train_lda, y_train, X_test_lda, y_test, 'LDA', i)
 
 def neural_network(X_train, y_train, X_test, y_test, output_str, i):
-    # X_train2 = X_train.as_matrix()
-    # train_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
-    #     X_train,
-    #     y_train,
-    #     every_n_steps=100)
     test_validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(
         X_test,
         y_test,
@@ -209,7 +204,7 @@ def neural_network(X_train, y_train, X_test, y_test, output_str, i):
     print("\nTest Accuracy: {0:f}\n".format(accuracy_score))
 
 def kmeans_as_feature(i=0):
-    n_clusters = [3,4,7]
+    n_clusters = [3,6,8]
 
     for n in n_clusters:
         k_means = KMeans(n_clusters=n, n_jobs=-1).fit(X_train)
@@ -232,7 +227,7 @@ def kmeans_as_feature(i=0):
         neural_network(X_train_feature, y_train, X_test_feature, y_test, 'KMeansFeature{}_'.format(i), n)
 
 def expectation_maximization_as_feature(i=0):
-    n_clusters = [3,4,8]
+    n_clusters = [3,6,8]
 
     for n in n_clusters:
         gm = GaussianMixture(n_components=n).fit(X_train)
@@ -268,14 +263,14 @@ def double_data(i):
 
 if __name__ == '__main__':
 
-    for i in range(4):
+    for i in range(1):
         overall(i)
 
         principal_component_analysis(i)
         independent_component_analysis(i)
         randomized_projection(i)
         latent_dirichlet_allocation(i)
-    # for i in range(4):
-    #     kmeans_as_feature(i)
-    #     expectation_maximization_as_feature(i)
-    #     double_data(i)
+    for i in range(1):
+        kmeans_as_feature(i)
+        expectation_maximization_as_feature(i)
+        double_data(i)
