@@ -52,13 +52,13 @@ import java.util.List;
 
 public class GridWorldGame {
 
-    GridWorldDomain gwdg;
-    OOSADomain domain;
-    TerminalFunction tf;
-    StateConditionTest goalCondition;
-    State initialState;
-    HashableStateFactory hashingFactory;
-    SimulatedEnvironment env;
+    private GridWorldDomain gwdg;
+    private OOSADomain domain;
+    private TerminalFunction tf;
+    private StateConditionTest goalCondition;
+    private State initialState;
+    private HashableStateFactory hashingFactory;
+    private SimulatedEnvironment env;
 
 
     public GridWorldGame(){
@@ -75,10 +75,10 @@ public class GridWorldGame {
         env = new SimulatedEnvironment(domain, initialState);
 
 
-        //VisualActionObserver observer = new VisualActionObserver(domain,
-        //	GridWorldVisualizer.getVisualizer(gwdg.getMap()));
-        //observer.initGUI();
-        //env.addObservers(observer);
+//        VisualActionObserver observer = new VisualActionObserver(domain,
+//        	GridWorldVisualizer.getVisualizer(gwdg.getMap()));
+//        observer.initGUI();
+//        env.addObservers(observer);
     }
 
 
@@ -278,13 +278,13 @@ public class GridWorldGame {
 
     public static void main(String[] args) {
         GridWorldGame example = new GridWorldGame();
-        String outputPath = "./Runs/";
+        String outputPath = "./Runs/GW/";
 
-        example.BFSExample(outputPath);
+//        example.BFSExample(outputPath);
 //        example.DFSExample(outputPath);
         //example.AStarExample(outputPath);
-//        example.valueIterationExample(outputPath);
-        //example.qLearningExample(outputPath);
+        example.valueIterationExample(outputPath);
+//        example.qLearningExample(outputPath);
         //example.sarsaLearningExample(outputPath);
 
         //example.experimentAndPlotter();
