@@ -24,6 +24,7 @@ import burlap.behavior.singleagent.planning.deterministic.informed.Heuristic;
 import burlap.behavior.singleagent.planning.deterministic.informed.astar.AStar;
 import burlap.behavior.singleagent.planning.deterministic.uninformed.bfs.BFS;
 import burlap.behavior.singleagent.planning.deterministic.uninformed.dfs.DFS;
+import burlap.behavior.singleagent.planning.stochastic.policyiteration.PolicyIteration;
 import burlap.behavior.singleagent.planning.stochastic.valueiteration.ValueIteration;
 import burlap.behavior.valuefunction.QFunction;
 import burlap.behavior.valuefunction.ValueFunction;
@@ -47,7 +48,11 @@ import burlap.statehashing.HashableStateFactory;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
 import burlap.visualizer.Visualizer;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class GridWorldGame {
@@ -59,6 +64,8 @@ public class GridWorldGame {
     private State initialState;
     private HashableStateFactory hashingFactory;
     private SimulatedEnvironment env;
+    private double discount;
+    private int size;
 
 
     public GridWorldGame(){
@@ -73,6 +80,33 @@ public class GridWorldGame {
         hashingFactory = new SimpleHashableStateFactory();
 
         env = new SimulatedEnvironment(domain, initialState);
+
+        this.discount = .99;
+        this.size = 11;
+
+
+//        VisualActionObserver observer = new VisualActionObserver(domain,
+//        	GridWorldVisualizer.getVisualizer(gwdg.getMap()));
+//        observer.initGUI();
+//        env.addObservers(observer);
+    }
+
+    public GridWorldGame(int size, double goalReward, double defaultReward,
+                         double discount, double sucessProb){
+        gwdg = new GridWorldDomain(size, size);
+        gwdg.setMapToFourRooms();
+        gwdg.setProbSucceedTransitionDynamics(sucessProb);
+        tf = new GridWorldTerminalFunction(size - 1, size - 1);
+        gwdg.setTf(tf);
+        goalCondition = new TFGoalCondition(tf);
+        domain = gwdg.generateDomain();
+
+        initialState = new GridWorldState(new GridAgent(0, 0), new GridLocation(size - 1, size - 1, "loc0"));
+        hashingFactory = new SimpleHashableStateFactory();
+
+        env = new SimulatedEnvironment(domain, initialState);
+        this.discount = discount;
+        this.size = size;
 
 
 //        VisualActionObserver observer = new VisualActionObserver(domain,
@@ -123,16 +157,39 @@ public class GridWorldGame {
 
     }
 
-    public void valueIterationExample(String outputPath){
+    public void valueIterationExample(String outputPath) throws IOException {
 
-        Planner planner = new ValueIteration(domain, 0.99, hashingFactory, 0.001, 100);
+        Planner planner = new ValueIteration(domain, discount, hashingFactory, 0.001, 100000);
+
+        long startTime = System.currentTimeMillis();
+        System.out.println("Start");
         Policy p = planner.planFromState(initialState);
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.println("End");
+        System.out.println("Time Elapsed: " + estimatedTime + " ms");
 
         PolicyUtils.rollout(p, initialState, domain.getModel()).write(outputPath + "vi");
 
-        simpleValueFunctionVis((ValueFunction)planner, p);
+        simpleValueFunctionVis((ValueFunction)planner, p, outputPath + "vi");
         //manualValueFunctionVis((ValueFunction)planner, p);
 
+    }
+
+
+    public void policyIterationExample(String outputPath) throws IOException {
+
+        Planner planner = new PolicyIteration(domain, discount, hashingFactory, .001, 100000, 100000);
+
+        long startTime = System.currentTimeMillis();
+        System.out.println("Start");
+        Policy p = planner.planFromState(initialState);
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.println("End");
+        System.out.println("Time Elapsed: " + estimatedTime + " ms");
+
+        PolicyUtils.rollout(p, initialState, domain.getModel()).write(outputPath + "pi");
+
+        simpleValueFunctionVis((ValueFunction)planner, p, outputPath + "pi");
     }
 
 
@@ -171,14 +228,23 @@ public class GridWorldGame {
 
     }
 
-    public void simpleValueFunctionVis(ValueFunction valueFunction, Policy p){
+    public void simpleValueFunctionVis(ValueFunction valueFunction, Policy p, String outputPath) throws IOException{
 
         List<State> allStates = StateReachability.getReachableStates(
                 initialState, domain, hashingFactory);
         ValueFunctionVisualizerGUI gui = GridWorldDomain.getGridWorldValueFunctionVisualization(
-                allStates, 11, 11, valueFunction, p);
+                allStates, this.size, this.size, valueFunction, p);
         gui.initGUI();
 
+        BufferedImage image = new BufferedImage(gui.getWidth(), gui.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        gui.printAll(g);
+        ImageIO.write(image, "png", new File(outputPath + ".png"));
     }
 
     public void manualValueFunctionVis(ValueFunction valueFunction, Policy p){
@@ -231,7 +297,7 @@ public class GridWorldGame {
     }
 
 
-    public void experimentAndPlotter(){
+    public void experimentAndPlotter(double qInit, double learningRate, double epsilon){
 
         //different reward function for more structured performance plots
         ((FactoredModel)domain.getModel()).setRf(new GoalBasedRF(this.goalCondition, 5.0, -0.1));
@@ -264,33 +330,40 @@ public class GridWorldGame {
         };
 
         LearningAlgorithmExperimenter exp = new LearningAlgorithmExperimenter(
-                env, 10, 100, qLearningFactory, sarsaLearningFactory);
+                env, 5, 2000, qLearningFactory, sarsaLearningFactory);
         exp.setUpPlottingConfiguration(500, 250, 2, 1000,
                 TrialMode.MOST_RECENT_AND_AVERAGE,
-                PerformanceMetric.CUMULATIVE_STEPS_PER_EPISODE,
+                PerformanceMetric.STEPS_PER_EPISODE,
                 PerformanceMetric.AVERAGE_EPISODE_REWARD);
 
+
+        long startTime = System.currentTimeMillis();
+        System.out.println("Start");
         exp.startExperiment();
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.println("End");
+        System.out.println("Time Elapsed: " + estimatedTime + " ms");
+
         exp.writeStepAndEpisodeDataToCSV("expData");
 
     }
 
 
-    public static void main(String[] args) {
+    /* public static void main(String[] args) {
         GridWorldGame example = new GridWorldGame();
         String outputPath = "./Runs/GW/";
 
-//        example.BFSExample(outputPath);
-//        example.DFSExample(outputPath);
-        //example.AStarExample(outputPath);
+        example.BFSExample(outputPath);
+        example.DFSExample(outputPath);
+        example.AStarExample(outputPath);
         example.valueIterationExample(outputPath);
-//        example.qLearningExample(outputPath);
-        //example.sarsaLearningExample(outputPath);
+        example.qLearningExample(outputPath);
+        example.sarsaLearningExample(outputPath);
 
-        //example.experimentAndPlotter();
+        example.experimentAndPlotter();
 
         example.visualize(outputPath);
 
-    }
+    }*/
 
 }
