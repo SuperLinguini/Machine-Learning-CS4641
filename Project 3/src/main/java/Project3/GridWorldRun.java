@@ -14,7 +14,6 @@ public class GridWorldRun {
         double[] reward = {-0.1,1,3,5,10,100};
         double[] discount = {0.99,0.95,0.9,0.8,0.6};
         double[] qInit = {0.3,0.5,1,5,30};
-        double[] epsilon = {0.05,0.1,0.3,0.5,0.8};
 
         OutputStream outs = System.out;
         PrintStream dos = new PrintStream(outs);
@@ -86,6 +85,39 @@ public class GridWorldRun {
             System.out.println("-------------Policy Iteration-------------");
             gw.policyIterationExample("./output/"+head+"/GridWorld_"+discount[i]);
         }
+
+        head = "qInit";
+        System.setOut(dos);
+        System.out.println(head);
+        new File("./output/"+head).mkdirs();
+        file = new File("./output/"+head+"/out_GW"); //Your file
+        fos = new FileOutputStream(file);
+        ps = new PrintStream(fos);
+        System.setOut(ps);
+        for(int i=0;i<qInit.length;i++){
+            System.out.println("----------------------"+head+"_"+qInit[i]+"-----------------------");
+            GridWorldGame gw = new GridWorldGame(11, 5, -0.1, 0.99, 0.99);
+            System.out.println("-------------Q Learning-------------");
+            gw.experimentAndPlotter("QLearning_qInit_" + i, qInit[i], 0.1);
+        }
+
+        head = "discount";
+        System.setOut(dos);
+        System.out.println(head);
+        new File("./output/"+head).mkdirs();
+        file = new File("./output/"+head+"/out_GW_QLearning"); //Your file
+        fos = new FileOutputStream(file);
+        ps = new PrintStream(fos);
+        System.setOut(ps);
+        for (int i = 0; i < discount.length; i++){
+            System.out.println("----------------------"+head+"_"+discount[i]+"-----------------------");
+            GridWorldGame gw = new GridWorldGame(11, 5, -0.1, discount[i], 0.99);
+            System.out.println("-------------Q Learning-------------");
+            gw.experimentAndPlotter("QLearning_discount_" + i, 0.3, 0.1);
+        }
+
+        System.setOut(dos);
+        System.out.println("ALL DONE");
     }
 
 }

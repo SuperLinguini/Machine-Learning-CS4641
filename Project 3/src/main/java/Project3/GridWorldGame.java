@@ -291,13 +291,10 @@ public class GridWorldGame {
 
         //start it
         gui.initGUI();
-
-
-
     }
 
 
-    public void experimentAndPlotter(double qInit, double learningRate, double epsilon){
+    public void experimentAndPlotter(String outputPath, final double qInit, final double learningRate){
 
         //different reward function for more structured performance plots
         ((FactoredModel)domain.getModel()).setRf(new GoalBasedRF(this.goalCondition, 5.0, -0.1));
@@ -313,7 +310,7 @@ public class GridWorldGame {
 
 
             public LearningAgent generateAgent() {
-                return new QLearning(domain, 0.99, hashingFactory, 0.3, 0.1);
+                return new QLearning(domain, 0.99, hashingFactory, qInit, learningRate);
             }
         };
 
@@ -325,7 +322,7 @@ public class GridWorldGame {
 
 
             public LearningAgent generateAgent() {
-                return new SarsaLam(domain, 0.99, hashingFactory, 0.0, 0.1, 1.);
+                return new SarsaLam(domain, 0.99, hashingFactory, qInit, learningRate, 1.);
             }
         };
 
@@ -344,26 +341,28 @@ public class GridWorldGame {
         System.out.println("End");
         System.out.println("Time Elapsed: " + estimatedTime + " ms");
 
-        exp.writeStepAndEpisodeDataToCSV("expData");
+        exp.writeStepAndEpisodeDataToCSV("expData" + outputPath);
 
     }
 
 
-    /* public static void main(String[] args) {
+    public static void main(String[] args) {
         GridWorldGame example = new GridWorldGame();
-        String outputPath = "./Runs/GW/";
+        String outputPath = "./output/discount/";
 
-        example.BFSExample(outputPath);
-        example.DFSExample(outputPath);
-        example.AStarExample(outputPath);
-        example.valueIterationExample(outputPath);
-        example.qLearningExample(outputPath);
-        example.sarsaLearningExample(outputPath);
+//        example.BFSExample(outputPath);
+//        example.DFSExample(outputPath);
+//        example.AStarExample(outputPath);
+//        example.valueIterationExample(outputPath);
+//        example.qLearningExample(outputPath);
+//        example.sarsaLearningExample(outputPath);
+//
+//        example.experimentAndPlotter();
 
-        example.experimentAndPlotter();
+//        example.visualize(outputPath);
 
-        example.visualize(outputPath);
-
-    }*/
+        GridWorldGame gw = new GridWorldGame(11, 5, -0.1, 0.99, 0.99);
+        gw.visualize(outputPath);
+    }
 
 }
