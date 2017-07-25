@@ -1,0 +1,138 @@
+----------------------prob_0.99-----------------------
+-------------Value Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 104
+Passes: 13
+End
+Time Elapsed: 140 ms
+Num generated: 1648; num unique: 104
+-------------Policy Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 103
+Iterations in inner VI for policy eval: 377
+Iterations in inner VI for policy eval: 287
+Iterations in inner VI for policy eval: 6
+Iterations in inner VI for policy eval: 4
+Iterations in inner VI for policy eval: 3
+Iterations in inner VI for policy eval: 3
+Iterations in inner VI for policy eval: 2
+Iterations in inner VI for policy eval: 1
+Total policy iterations: 8
+End
+Time Elapsed: 1059 ms
+Num generated: 1648; num unique: 104
+----------------------prob_0.9-----------------------
+-------------Value Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 104
+Passes: 18
+End
+Time Elapsed: 46 ms
+Num generated: 1648; num unique: 104
+-------------Policy Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 103
+Iterations in inner VI for policy eval: 303
+Iterations in inner VI for policy eval: 23
+Iterations in inner VI for policy eval: 15
+Iterations in inner VI for policy eval: 6
+Iterations in inner VI for policy eval: 5
+Iterations in inner VI for policy eval: 3
+Iterations in inner VI for policy eval: 2
+Iterations in inner VI for policy eval: 1
+Total policy iterations: 8
+End
+Time Elapsed: 433 ms
+Num generated: 1648; num unique: 104
+----------------------prob_0.8-----------------------
+-------------Value Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 104
+Passes: 25
+End
+Time Elapsed: 33 ms
+Num generated: 1648; num unique: 104
+-------------Policy Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 103
+Iterations in inner VI for policy eval: 417
+Iterations in inner VI for policy eval: 200
+Iterations in inner VI for policy eval: 96
+Iterations in inner VI for policy eval: 12
+Iterations in inner VI for policy eval: 5
+Iterations in inner VI for policy eval: 3
+Iterations in inner VI for policy eval: 1
+Total policy iterations: 7
+End
+Time Elapsed: 920 ms
+Num generated: 1648; num unique: 104
+----------------------prob_0.6-----------------------
+-------------Value Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 104
+Passes: 50
+End
+Time Elapsed: 71 ms
+Num generated: 1648; num unique: 104
+-------------Policy Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 103
+Iterations in inner VI for policy eval: 281
+Iterations in inner VI for policy eval: 53
+Iterations in inner VI for policy eval: 8
+Iterations in inner VI for policy eval: 1
+Total policy iterations: 4
+End
+Time Elapsed: 579 ms
+Num generated: 1648; num unique: 104
+----------------------prob_0.4-----------------------
+-------------Value Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 104
+Passes: 80
+End
+Time Elapsed: 103 ms
+Num generated: 1648; num unique: 104
+-------------Policy Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 103
+Iterations in inner VI for policy eval: 327
+Iterations in inner VI for policy eval: 147
+Iterations in inner VI for policy eval: 38
+Iterations in inner VI for policy eval: 6
+Iterations in inner VI for policy eval: 1
+Total policy iterations: 5
+End
+Time Elapsed: 572 ms
+Num generated: 1648; num unique: 104
+----------------------prob_0.2-----------------------
+-------------Value Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 104
+Passes: 240
+End
+Time Elapsed: 355 ms
+Num generated: 1648; num unique: 104
+-------------Policy Iteration-------------
+Start
+Starting reachability analysis
+Finished reachability analysis; # states: 103
+Iterations in inner VI for policy eval: 285
+Iterations in inner VI for policy eval: 184
+Iterations in inner VI for policy eval: 8
+Iterations in inner VI for policy eval: 1
+Total policy iterations: 4
+End
+Time Elapsed: 689 ms
+Num generated: 1648; num unique: 104

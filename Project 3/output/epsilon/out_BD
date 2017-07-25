@@ -1,0 +1,50 @@
+----------------------epsilon_0.05-----------------------
+-------------Q Learning-------------
+Start
+Beginning Q-learning trial 1/5
+Beginning Q-learning trial 2/5
+Beginning Q-learning trial 3/5
+Beginning Q-learning trial 4/5
+Beginning Q-learning trial 5/5
+End
+Time Elapsed: 2997 ms
+----------------------epsilon_0.1-----------------------
+-------------Q Learning-------------
+Start
+Beginning Q-learning trial 1/5
+Beginning Q-learning trial 2/5
+Beginning Q-learning trial 3/5
+Beginning Q-learning trial 4/5
+Beginning Q-learning trial 5/5
+End
+Time Elapsed: 3621 ms
+----------------------epsilon_0.3-----------------------
+-------------Q Learning-------------
+Start
+Beginning Q-learning trial 1/5
+Beginning Q-learning trial 2/5
+Beginning Q-learning trial 3/5
+Beginning Q-learning trial 4/5
+Beginning Q-learning trial 5/5
+End
+Time Elapsed: 5034 ms
+----------------------epsilon_0.5-----------------------
+-------------Q Learning-------------
+Start
+Beginning Q-learning trial 1/5
+Beginning Q-learning trial 2/5
+Beginning Q-learning trial 3/5
+Beginning Q-learning trial 4/5
+Beginning Q-learning trial 5/5
+End
+Time Elapsed: 7747 ms
+----------------------epsilon_0.8-----------------------
+-------------Q Learning-------------
+Start
+Beginning Q-learning trial 1/5
+Beginning Q-learning trial 2/5
+Beginning Q-learning trial 3/5
+Beginning Q-learning trial 4/5
+Beginning Q-learning trial 5/5
+End
+Time Elapsed: 13646 ms

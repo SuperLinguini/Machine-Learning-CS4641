@@ -1,0 +1,935 @@
+!!burlap.behavior.singleagent.Episode
+actionSequence:
+- &id001 !!burlap.mdp.core.action.SimpleAction {name: west}
+- *id001
+- &id003 !!burlap.mdp.core.action.SimpleAction {name: putdown}
+- &id004 !!burlap.mdp.core.action.SimpleAction {name: east}
+- &id002 !!burlap.mdp.core.action.SimpleAction {name: up}
+- *id002
+- &id005 !!burlap.mdp.core.action.SimpleAction {name: pickup}
+- *id001
+- *id001
+- *id001
+- *id003
+- *id004
+- *id002
+- *id002
+- *id004
+- *id005
+- *id002
+- *id002
+- *id002
+- *id004
+- *id004
+- *id001
+- *id003
+- *id001
+- *id002
+- *id004
+- *id005
+- *id002
+- *id002
+- *id003
+- *id001
+- *id001
+- *id002
+- *id005
+- *id004
+- *id002
+- *id003
+- *id001
+- *id002
+- *id001
+- *id005
+- *id004
+- *id004
+- *id003
+- *id001
+- *id002
+- *id001
+- *id001
+- *id005
+- *id004
+- *id003
+- *id001
+- *id002
+- *id001
+- *id001
+- *id005
+- *id004
+- *id002
+- *id002
+- *id004
+- *id003
+- *id001
+- *id002
+- *id001
+- *id001
+- *id002
+- *id005
+- *id004
+- *id002
+- *id002
+- *id004
+- *id004
+- *id002
+- *id002
+- *id004
+- *id004
+- *id002
+- *id003
+- *id001
+- *id001
+- *id002
+- *id001
+- *id001
+- *id001
+- *id002
+- *id001
+- *id001
+- *id002
+- *id005
+- *id002
+- *id002
+- *id001
+- *id001
+- *id001
+rewardSequence: [-1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
+  -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
+  -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
+  -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
+  -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
+  -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0,
+  -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0]
+stateSequence:
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 8, y: 4}
+  blocks: &id006
+  - &id009 {className: block, name: b0, x: 4, y: 2}
+  - {className: block, name: b1, x: 5, y: 2}
+  - &id010 {className: block, name: b2, x: 13, y: 4}
+  - &id011 {className: block, name: b3, x: 15, y: 5}
+  - &id012 {className: block, name: b4, x: 16, y: 5}
+  - &id013 {className: block, name: b5, x: 16, y: 6}
+  exit: &id007 {className: exit, name: exit, x: 0, y: 1}
+  map: &id008
+    map:
+    - [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 7, y: 3}
+  blocks: *id006
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 6, y: 2}
+  blocks: *id006
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 6, y: 2}
+  blocks: &id014
+  - *id009
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - {className: block, name: b1, x: 6, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 6, y: 2}
+  blocks: *id014
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 7, y: 3}
+  blocks:
+  - *id009
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - {className: block, name: b1, x: 7, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 8, y: 4}
+  blocks:
+  - *id009
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - {className: block, name: b1, x: 8, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 8, y: 4}
+  blocks: &id015
+  - *id009
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - &id016 {className: block, name: b1, x: 9, y: 1}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 7, y: 3}
+  blocks: *id015
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 6, y: 2}
+  blocks: *id015
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 5, y: 2}
+  blocks: *id015
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 5, y: 2}
+  blocks:
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - {className: block, name: b0, x: 5, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 6, y: 2}
+  blocks:
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - {className: block, name: b0, x: 6, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 7, y: 3}
+  blocks:
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - {className: block, name: b0, x: 7, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 8, y: 4}
+  blocks:
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - {className: block, name: b0, x: 8, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 9, y: 2}
+  blocks:
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - {className: block, name: b0, x: 9, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 9, y: 2}
+  blocks: &id017
+  - *id010
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - &id018 {className: block, name: b0, x: 10, y: 2}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 10, y: 3}
+  blocks: *id017
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 11, y: 4}
+  blocks: *id017
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 12, y: 5}
+  blocks: *id017
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 13, y: 5}
+  blocks: *id017
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 14, y: 4}
+  blocks: *id017
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 14, y: 4}
+  blocks: *id017
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 14, y: 4}
+  blocks:
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - *id018
+  - {className: block, name: b2, x: 14, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 13, y: 4}
+  blocks:
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - *id018
+  - {className: block, name: b2, x: 13, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 12, y: 5}
+  blocks:
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - *id018
+  - {className: block, name: b2, x: 12, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 13, y: 4}
+  blocks:
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - *id018
+  - {className: block, name: b2, x: 13, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 13, y: 4}
+  blocks: &id019
+  - *id011
+  - *id012
+  - *id013
+  - *id016
+  - *id018
+  - &id020 {className: block, name: b2, x: 14, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 14, y: 5}
+  blocks: *id019
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 15, y: 6}
+  blocks: *id019
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 15, y: 6}
+  blocks:
+  - *id011
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - {className: block, name: b5, x: 15, y: 7}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 14, y: 5}
+  blocks:
+  - *id011
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - {className: block, name: b5, x: 14, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 13, y: 4}
+  blocks:
+  - *id011
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - {className: block, name: b5, x: 13, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 12, y: 5}
+  blocks:
+  - *id011
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - {className: block, name: b5, x: 12, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 12, y: 5}
+  blocks: &id021
+  - *id011
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - &id022 {className: block, name: b5, x: 11, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 13, y: 4}
+  blocks: *id021
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 14, y: 5}
+  blocks: *id021
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 14, y: 5}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - *id022
+  - {className: block, name: b3, x: 14, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 13, y: 4}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - *id022
+  - {className: block, name: b3, x: 13, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 12, y: 5}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - *id022
+  - {className: block, name: b3, x: 12, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 11, y: 5}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - *id022
+  - {className: block, name: b3, x: 11, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 11, y: 5}
+  blocks: &id023
+  - *id012
+  - *id016
+  - *id018
+  - *id020
+  - *id022
+  - &id024 {className: block, name: b3, x: 10, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 12, y: 5}
+  blocks: *id023
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 13, y: 4}
+  blocks: *id023
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 13, y: 4}
+  blocks: &id025
+  - *id012
+  - *id016
+  - *id018
+  - *id022
+  - *id024
+  - {className: block, name: b2, x: 13, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 13, y: 4}
+  blocks: *id025
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 12, y: 5}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id022
+  - *id024
+  - {className: block, name: b2, x: 12, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 11, y: 5}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id022
+  - *id024
+  - {className: block, name: b2, x: 11, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 10, y: 4}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id022
+  - *id024
+  - {className: block, name: b2, x: 10, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 10, y: 4}
+  blocks: &id026
+  - *id012
+  - *id016
+  - *id018
+  - *id022
+  - *id024
+  - &id027 {className: block, name: b2, x: 9, y: 2}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 10, y: 4}
+  blocks: *id026
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 10, y: 4}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id024
+  - *id027
+  - {className: block, name: b5, x: 10, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 9, y: 3}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id024
+  - *id027
+  - {className: block, name: b5, x: 9, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 8, y: 4}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id024
+  - *id027
+  - {className: block, name: b5, x: 8, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 7, y: 3}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id024
+  - *id027
+  - {className: block, name: b5, x: 7, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 6, y: 2}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id024
+  - *id027
+  - {className: block, name: b5, x: 6, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 6, y: 2}
+  blocks: &id028
+  - *id012
+  - *id016
+  - *id018
+  - *id024
+  - *id027
+  - &id029 {className: block, name: b5, x: 5, y: 2}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 6, y: 2}
+  blocks: *id028
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 7, y: 3}
+  blocks: *id028
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 8, y: 4}
+  blocks: *id028
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 9, y: 3}
+  blocks: *id028
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 9, y: 3}
+  blocks: &id030
+  - *id012
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - {className: block, name: b3, x: 9, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 9, y: 3}
+  blocks: *id030
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 8, y: 4}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - {className: block, name: b3, x: 8, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 7, y: 3}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - {className: block, name: b3, x: 7, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 6, y: 2}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - {className: block, name: b3, x: 6, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 5, y: 3}
+  blocks:
+  - *id012
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - {className: block, name: b3, x: 5, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 5, y: 3}
+  blocks: &id031
+  - *id012
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - &id032 {className: block, name: b3, x: 4, y: 2}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 6, y: 2}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 7, y: 3}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 8, y: 4}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 9, y: 3}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 10, y: 3}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 11, y: 4}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 12, y: 5}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 13, y: 4}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 14, y: 4}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: false, x: 15, y: 5}
+  blocks: *id031
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 1, holding: true, x: 15, y: 5}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 15, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 14, y: 4}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 14, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 13, y: 4}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 13, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 12, y: 5}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 12, y: 6}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 11, y: 4}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 11, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 10, y: 3}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 10, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 9, y: 3}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 9, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 8, y: 4}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 8, y: 5}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 7, y: 3}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 7, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 6, y: 2}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 6, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: true, x: 5, y: 3}
+  blocks:
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 5, y: 4}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 5, y: 3}
+  blocks: &id033
+  - *id016
+  - *id018
+  - *id027
+  - *id029
+  - *id032
+  - {className: block, name: b4, x: 4, y: 3}
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 4, y: 4}
+  blocks: *id033
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 3, y: 5}
+  blocks: *id033
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 2, y: 5}
+  blocks: *id033
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 1, y: 5}
+  blocks: *id033
+  exit: *id007
+  map: *id008
+- !!burlap.domain.singleagent.blockdude.state.BlockDudeState
+  agent: {dir: 0, holding: false, x: 0, y: 1}
+  blocks: *id033
+  exit: *id007
+  map: *id008
