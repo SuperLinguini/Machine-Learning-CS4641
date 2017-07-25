@@ -1,5 +1,6 @@
 package Project3;
 
+import burlap.behavior.policy.EpsilonGreedy;
 import burlap.behavior.policy.GreedyQPolicy;
 import burlap.behavior.policy.Policy;
 import burlap.behavior.policy.PolicyUtils;
@@ -56,7 +57,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class GridWorldGame {
-
     private GridWorldDomain gwdg;
     private OOSADomain domain;
     private TerminalFunction tf;
@@ -92,10 +92,10 @@ public class GridWorldGame {
     }
 
     public GridWorldGame(int size, double goalReward, double defaultReward,
-                         double discount, double sucessProb){
+                         double discount, double successProb){
         gwdg = new GridWorldDomain(size, size);
         gwdg.setMapToFourRooms();
-        gwdg.setProbSucceedTransitionDynamics(sucessProb);
+        gwdg.setProbSucceedTransitionDynamics(successProb);
         tf = new GridWorldTerminalFunction(size - 1, size - 1);
         gwdg.setTf(tf);
         goalCondition = new TFGoalCondition(tf);
@@ -108,6 +108,7 @@ public class GridWorldGame {
         this.discount = discount;
         this.size = size;
 
+        ((FactoredModel)domain.getModel()).setRf(new GoalBasedRF(this.goalCondition, goalReward, -0.1));
 
 //        VisualActionObserver observer = new VisualActionObserver(domain,
 //        	GridWorldVisualizer.getVisualizer(gwdg.getMap()));
@@ -168,7 +169,7 @@ public class GridWorldGame {
         System.out.println("End");
         System.out.println("Time Elapsed: " + estimatedTime + " ms");
 
-        PolicyUtils.rollout(p, initialState, domain.getModel()).write(outputPath + "vi");
+        PolicyUtils.rollout(p, initialState, domain.getModel(), 200).write(outputPath + "vi");
 
         simpleValueFunctionVis((ValueFunction)planner, p, outputPath + "vi");
         //manualValueFunctionVis((ValueFunction)planner, p);
@@ -187,7 +188,7 @@ public class GridWorldGame {
         System.out.println("End");
         System.out.println("Time Elapsed: " + estimatedTime + " ms");
 
-        PolicyUtils.rollout(p, initialState, domain.getModel()).write(outputPath + "pi");
+        PolicyUtils.rollout(p, initialState, domain.getModel(), 200).write(outputPath + "pi");
 
         simpleValueFunctionVis((ValueFunction)planner, p, outputPath + "pi");
     }
@@ -327,12 +328,11 @@ public class GridWorldGame {
         };
 
         LearningAlgorithmExperimenter exp = new LearningAlgorithmExperimenter(
-                env, 5, 2000, qLearningFactory, sarsaLearningFactory);
+                env, 5, 2000, qLearningFactory); // sarsaLearningFactory
         exp.setUpPlottingConfiguration(500, 250, 2, 1000,
                 TrialMode.MOST_RECENT_AND_AVERAGE,
                 PerformanceMetric.STEPS_PER_EPISODE,
                 PerformanceMetric.AVERAGE_EPISODE_REWARD);
-
 
         long startTime = System.currentTimeMillis();
         System.out.println("Start");
@@ -341,13 +341,52 @@ public class GridWorldGame {
         System.out.println("End");
         System.out.println("Time Elapsed: " + estimatedTime + " ms");
 
-        exp.writeStepAndEpisodeDataToCSV("expData" + outputPath);
+        exp.writeStepAndEpisodeDataToCSV(outputPath);
 
+    }
+
+    public void epsilonComparison(String outputPath, final double qInit, final double learningRate, final double epsilon){
+
+        //different reward function for more interesting results
+//		((SimulatedEnvironment)env).setRf(new GoalBasedRF(this.goalCondition, 5.0, -0.1));
+
+        /**
+         * Create factories for Q-learning agent with different learning policies to compare
+         */
+        LearningAgentFactory qLearningFactory = new LearningAgentFactory() {
+            public String getAgentName() {
+                return "Q-Learning";
+            }
+
+            public LearningAgent generateAgent() {
+                QLearning q = new QLearning(domain, 0.99, hashingFactory, qInit, learningRate);
+                q.setLearningPolicy(new EpsilonGreedy(q, epsilon));;
+                return q;
+            }
+        };
+
+        //set up learning agent experimenter
+        LearningAlgorithmExperimenter exp = new LearningAlgorithmExperimenter(env, 5, 2000,
+                qLearningFactory);
+        exp.setUpPlottingConfiguration(500, 250, 2, 1000,
+                TrialMode.MOST_RECENT_AND_AVERAGE,
+                PerformanceMetric.STEPS_PER_EPISODE,
+                PerformanceMetric.AVERAGE_EPISODE_REWARD);
+
+        long startTime = System.currentTimeMillis();
+        System.out.println("Start");
+        exp.startExperiment();
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.println("End");
+        System.out.println("Time Elapsed: " + estimatedTime + " ms");
+
+        exp.writeStepAndEpisodeDataToCSV(outputPath);
     }
 
 
     public static void main(String[] args) {
-        GridWorldGame example = new GridWorldGame();
+//        GridWorldGame example = new GridWorldGame();
+        GridWorldGame example = new GridWorldGame(11, 5, -0.1, 0.99, 0.99);
         String outputPath = "./output/discount/";
 
 //        example.BFSExample(outputPath);
@@ -361,8 +400,7 @@ public class GridWorldGame {
 
 //        example.visualize(outputPath);
 
-        GridWorldGame gw = new GridWorldGame(11, 5, -0.1, 0.99, 0.99);
-        gw.visualize(outputPath);
+        example.visualize(outputPath);
     }
 
 }

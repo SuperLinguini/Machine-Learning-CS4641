@@ -60,7 +60,7 @@ public class BDRun {
         fos = new FileOutputStream(file);
         ps = new PrintStream(fos);
         System.setOut(ps);
-        for(int i=0;i<discount.length;i++){
+        for (int i=0; i < discount.length; i++){
             System.out.println("----------------------"+head+"_"+discount[i]+"-----------------------");
             BD bd = new BD(5, -0.1, discount[i],3);
             System.out.println("-------------Value Iteration-------------");
@@ -69,36 +69,36 @@ public class BDRun {
             bd.policyIteration("./output/"+head+"/BlockDude_"+discount[i]);
         }
 
-//        head = "qInit";
-//        System.setOut(dos);
-//        System.out.println(head);
-//        new File("./output/"+head).mkdirs();
-//        file = new File("./output/"+head+"/out_BD"); //Your file
-//        fos = new FileOutputStream(file);
-//        ps = new PrintStream(fos);
-//        System.setOut(ps);
-//        for(int i=0;i<qInit.length;i++){
-//            System.out.println("----------------------"+head+"_"+qInit[i]+"-----------------------");
-//            BD bd = new BD(5, -0.1, 0.99,3);
-//            System.out.println("-------------Q Learning-------------");
-//            bd.QLearning("./output/"+head+"/BlockDude_"+qInit[i], qInit[i], 1, 0.1);
-//        }
-//
-//
-//        head = "epsilon";
-//        System.setOut(dos);
-//        System.out.println(head);
-//        new File("./output/"+head).mkdirs();
-//        file = new File("./output/"+head+"/out_BD"); //Your file
-//        fos = new FileOutputStream(file);
-//        ps = new PrintStream(fos);
-//        System.setOut(ps);
-//        for(int i=0;i<epsilon.length;i++){
-//            System.out.println("----------------------"+head+"_"+epsilon[i]+"-----------------------");
-//            BD bd = new BD(5, -0.1, 0.99,1);
-//            System.out.println("-------------Q Learning-------------");
-//            bd.QLearning("./output/"+head+"/BlockDude_"+epsilon[i], 0.3, 1, epsilon[i]);
-//        }
+        head = "qInit";
+        System.setOut(dos);
+        System.out.println(head);
+        new File("./output/"+head).mkdirs();
+        file = new File("./output/"+head+"/out_BD"); //Your file
+        fos = new FileOutputStream(file);
+        ps = new PrintStream(fos);
+        System.setOut(ps);
+        for(int i=0;i<qInit.length;i++){
+            System.out.println("----------------------"+head+"_"+qInit[i]+"-----------------------");
+            BD bd = new BD(5, -0.1, 0.99,3);
+            System.out.println("-------------Q Learning-------------");
+            bd.experimentAndPlotter(qInit[i]);
+        }
+
+
+        head = "epsilon";
+        System.setOut(dos);
+        System.out.println(head);
+        new File("./output/"+head).mkdirs();
+        file = new File("./output/"+head+"/out_BD"); //Your file
+        fos = new FileOutputStream(file);
+        ps = new PrintStream(fos);
+        System.setOut(ps);
+        for(int i=0;i<epsilon.length;i++){
+            System.out.println("----------------------"+head+"_"+epsilon[i]+"-----------------------");
+            BD bd = new BD(5, -0.1, 0.99,1);
+            System.out.println("-------------Q Learning-------------");
+            bd.epsilonComparison("./output/"+head+"/BlockDude_"+epsilon[i], 0.3, 1, epsilon[i]);
+        }
         System.setOut(dos);
         System.out.println("ALL DONE");
 

@@ -32,9 +32,6 @@ import burlap.domain.singleagent.blockdude.BlockDude;
 import burlap.domain.singleagent.blockdude.BlockDudeLevelConstructor;
 import burlap.domain.singleagent.blockdude.BlockDudeTF;
 import burlap.domain.singleagent.blockdude.BlockDudeVisualizer;
-import burlap.domain.singleagent.gridworld.GridWorldDomain;
-import burlap.domain.singleagent.gridworld.GridWorldTerminalFunction;
-import burlap.domain.singleagent.gridworld.GridWorldVisualizer;
 import burlap.mdp.auxiliary.stateconditiontest.TFGoalCondition;
 import burlap.mdp.core.TerminalFunction;
 import burlap.mdp.core.state.State;
@@ -48,7 +45,6 @@ import burlap.mdp.singleagent.oo.OOSADomain;
 import burlap.shell.visual.VisualExplorer;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
 import burlap.visualizer.Visualizer;
-import jdk.nashorn.internal.ir.Block;
 
 public class BD {
     private BlockDude bd;
@@ -74,11 +70,13 @@ public class BD {
         } else if(this.level == 3) {
             this.initialState = BlockDudeLevelConstructor.getLevel3(domain);
         } else {
-            this.initialState = BlockDudeLevelConstructor.getLevel2(domain);
+            this.initialState = BlockDudeLevelConstructor.getLevel3(domain);
         }
         this.hashingFactory = new SimpleHashableStateFactory();
         tf = new BlockDudeTF();
         rf = new GoalBasedRF(new TFGoalCondition(tf), goalReward, defaultReward);
+        bd.setRf(rf);
+        bd.setTf(tf);
         this.discount = discount;
         env = new SimulatedEnvironment(domain, initialState);
     }
@@ -118,7 +116,7 @@ public class BD {
         System.out.println("End");
         System.out.println("Time Elapsed: " + estimatedTime + " ms");
 
-        PolicyUtils.rollout(p, initialState, domain.getModel()).write(outputPath + "vi");
+        PolicyUtils.rollout(p, initialState, domain.getModel(), 200).write(outputPath + "vi");
 
 //        simpleValueFunctionVis((ValueFunction)planner, p);
 //        p.evaluateBehavior(initialState, rf, tf).writeToFile(outputPath + "_vi");
@@ -137,7 +135,7 @@ public class BD {
         System.out.println("End");
         System.out.println("Time Elapsed: " + estimatedTime + " ms");
 
-        PolicyUtils.rollout(p, initialState, domain.getModel()).write(outputPath + "pi");
+        PolicyUtils.rollout(p, initialState, domain.getModel(), 200).write(outputPath + "pi");
 //        p.evaluateBehavior(initialState, rf, tf).writeToFile(outputPath + "_pi");
 
         //simpleValueFunctionVis((ValueFunction)planner, p, outputPath + "_pi");
@@ -176,7 +174,24 @@ public class BD {
 //        System.out.println("Time Elapsed: " + estimatedTime + " ms");
 //    }
 
-    public void experimentAndPlotter(){
+    public void QLearningExample(String outputPath){
+
+        LearningAgent agent = new QLearning(domain, 0.99, hashingFactory, 0., .99, 1);
+
+        //run learning for 50 episodes
+        for(int i = 0; i < 1; i++){
+            Episode e = agent.runLearningEpisode(env);
+
+            e.write(outputPath + "ql_" + i);
+            System.out.println(i + ": " + e.maxTimeStep());
+
+            //reset environment for next learning episode
+            env.resetEnvironment();
+        }
+
+    }
+
+    public void experimentAndPlotter(final double qInit){
 
         //different reward function for more structured performance plots
 //        ((FactoredModel)domain.getModel()).setRf(new GoalBasedRF(this.goalCondition, 5.0, -0.1));
@@ -192,7 +207,7 @@ public class BD {
 
 
             public LearningAgent generateAgent() {
-                return new QLearning(domain, 0.99, hashingFactory, 0.3, 0.1);
+                return new QLearning(domain, 0.99, hashingFactory, qInit, 0.1, 100);
             }
         };
 
@@ -204,7 +219,7 @@ public class BD {
 
 
             public LearningAgent generateAgent() {
-                return new SarsaLam(domain, 0.99, hashingFactory, 0.0, 0.1, 1.);
+                return new SarsaLam(domain, 0.99, hashingFactory, qInit, 0.1, 100,1.);
             }
         };
 
@@ -212,7 +227,9 @@ public class BD {
 //                env, 10, 100, qLearningFactory, sarsaLearningFactory);
 
         LearningAlgorithmExperimenter exp = new LearningAlgorithmExperimenter(env,
-                5, 500, qLearningFactory, sarsaLearningFactory);
+                5, 1000, qLearningFactory);//, sarsaLearningFactory);
+
+//        exp.toggleTrialLengthInterpretation(false);
 
         exp.setUpPlottingConfiguration(500, 250, 2, 1000,
                 TrialMode.MOST_RECENT_AND_AVERAGE,
@@ -228,6 +245,40 @@ public class BD {
         System.out.println("Time Elapsed: " + estimatedTime + " ms");
         exp.writeStepAndEpisodeDataToCSV("expData");
 
+    }
+
+    public void epsilonComparison(String outputPath, final double qInit, final double learningRate, final double epsilon){
+        /**
+         * Create factories for Q-learning agent with different learning policies to compare
+         */
+        LearningAgentFactory qLearningFactory = new LearningAgentFactory() {
+            public String getAgentName() {
+                return "Q-Learning with Epsilon";
+            }
+
+            public LearningAgent generateAgent() {
+                QLearning q = new QLearning(domain, 0.99, hashingFactory, qInit, learningRate);
+                q.setLearningPolicy(new EpsilonGreedy(q, epsilon));;
+                return q;
+            }
+        };
+
+        //set up learning agent experimenter
+        LearningAlgorithmExperimenter exp = new LearningAlgorithmExperimenter(env, 5, 2000,
+                qLearningFactory);
+        exp.setUpPlottingConfiguration(500, 250, 2, 1000,
+                TrialMode.MOST_RECENT_AND_AVERAGE,
+                PerformanceMetric.STEPS_PER_EPISODE,
+                PerformanceMetric.AVERAGE_EPISODE_REWARD);
+
+        long startTime = System.currentTimeMillis();
+        System.out.println("Start");
+        exp.startExperiment();
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.println("End");
+        System.out.println("Time Elapsed: " + estimatedTime + " ms");
+
+        exp.writeStepAndEpisodeDataToCSV(outputPath);
     }
 
     public void visualize() {
@@ -279,14 +330,14 @@ public class BD {
         exp.initGUI();
     }
 
-    public static void main(String[] args) throws IOException {
-        String ouputPath = "./output/discount/";
+    /*public static void main(String[] args) throws IOException {
+        String outputPath = "./output/qInit/";
         BD bd = new BD(5,-0.1,0.99,3);
-//        bd.valueIteration(ouputPath);
-//        bd.policyIteration(ouputPath);
+//        bd.valueIteration(outputPath);
+//        bd.policyIteration(outputPath);
 //        bd.experimentAndPlotter();
-
-        bd.visualize(ouputPath);
+//        bd.QLearningExample(outputPath);
+        bd.visualize(outputPath);
 //        bd.initGUI();
-    }
+    }*/
 }
